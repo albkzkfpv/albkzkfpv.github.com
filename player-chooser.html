@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Player Chooser</title>
+  <style>
+    html, body {
+      margin: 0; padding: 0;
+      height: 100%;
+      background: #282c34;
+      overflow: hidden;
+      font-family: sans-serif;
+      color: white;
+      touch-action: none;
+    }
+    #message {
+      text-align: center;
+      font-size: 2em;
+      margin: 20px;
+    }
+    .finger {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background: skyblue;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .chosen {
+      background: lime;
+      transform: scale(1.5) translate(-50%, -50%);
+      transition: transform 0.3s;
+    }
+  </style>
+</head>
+<body>
+  <div id="message">Clique ou touche l’écran pour participer</div>
+
+  <script>
+    const questions = [
+      "Quelle est ta plus grande peur ?",
+      "Quel est ton plus grand rêve ?",
+      "As-tu déjà menti à un ami ?",
+      "Quelle est ta chanson préférée ?",
+      "Quel est ton pire souvenir ?",
+      "Quelle célébrité voudrais-tu rencontrer ?",
+      "Quel super pouvoir aimerais-tu avoir ?",
+      "Préférerais-tu être riche ou célèbre ?",
+      "Quelle est ta plus grande honte ?",
+      "Si tu pouvais changer ton prénom, ce serait quoi ?",
+      "Quel est le film que tu pourrais regarder 100 fois ?",
+      "Quelle est ta boisson préférée ?",
+      "As-tu déjà triché à un test ?",
+      "Quelle appli utilises-tu le plus ?",
+      "As-tu un talent caché ?",
+      "Es-tu plutôt matin ou soir ?",
+      "As-tu déjà eu le béguin pour un prof ?",
+      "Quelle est ta plus grosse bêtise ?",
+      "Quel animal te représente le mieux ?",
+      "As-tu un surnom ?"
+    ];
+
+    let fingers = [];
+    let timeout = null;
+    const message = document.getElementById('message');
+
+    function createFinger(x, y, id) {
+      if (fingers.find(f => f.id === id)) return;
+      const el = document.createElement('div');
+      el.className = 'finger';
+      el.style.left = x + 'px';
+      el.style.top = y + 'px';
+      document.body.appendChild(el);
+      fingers.push({ id, el });
+      if (fingers.length === 1) {
+        message.textContent = 'Attendez...';
+        timeout = setTimeout(pickRandom, 2000);
+      }
+    }
+
+    function removeFinger(id) {
+      const idx = fingers.findIndex(f => f.id === id);
+      if (idx >= 0) {
+        fingers[idx].el.remove();
+        fingers.splice(idx, 1);
+      }
+    }
+
+    document.addEventListener('mousedown', e => {
+      createFinger(e.clientX, e.clientY, 'mouse');
+    });
+    document.addEventListener('mouseup', e => {
+      removeFinger('mouse');
+    });
+
+    document.addEventListener('touchstart', e => {
+      for (const touch of e.changedTouches) {
+        createFinger(touch.clientX, touch.clientY, touch.identifier);
+      }
+    });
+    document.addEventListener('touchend', e => {
+      for (const touch of e.changedTouches) {
+        removeFinger(touch.identifier);
+      }
+    });
+
+    function pickRandom() {
+      if (fingers.length === 0) {
+        message.textContent = 'Personne à choisir — clique ou touche pour participer.';
+        return;
+      }
+      const chosen = fingers[Math.floor(Math.random() * fingers.length)];
+      chosen.el.classList.add('chosen');
+      const q = questions[Math.floor(Math.random() * questions.length)];
+      message.textContent = "🎯 Question pour le joueur choisi :\n" + q;
+      setTimeout(resetAll, 5000);
+    }
+
+    function resetAll() {
+      for (const f of fingers) f.el.remove();
+      fingers = [];
+      message.textContent = 'Clique ou touche l’écran pour participer';
+    }
+  </script>
+</body>
+</html>
