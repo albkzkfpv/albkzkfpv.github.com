@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,7 +11,7 @@
       overflow: hidden;
       font-family: sans-serif;
       color: white;
-      touch-action: none;
+      touch-action: none; /* important pour le mobile */
     }
     #message {
       text-align: center;
@@ -39,8 +38,7 @@
   <div id="message">Clique ou touche l’écran pour participer</div>
 
   <script>
-    const questions = [
-      "Quelle est ta plus grande peur ?",
+    const questions = ["Quelle est ta plus grande peur ?",
       "Quel est ton plus grand rêve ?",
       "As-tu déjà menti à un ami ?",
       "Quelle est ta chanson préférée ?",
@@ -59,7 +57,89 @@
       "As-tu déjà eu le béguin pour un prof ?",
       "Quelle est ta plus grosse bêtise ?",
       "Quel animal te représente le mieux ?",
-      "As-tu un surnom ?"
+      "As-tu un surnom ?",
+      "Si tu gagnais 1M€, que ferais-tu ?",
+      "Quel est ton plat préféré ?",
+      "Quelle série regardes-tu en boucle ?",
+      "Quelle est ta plus grande qualité ?",
+      "Ton plus gros défaut ?",
+      "Tu préfères avoir chaud ou froid ?",
+      "As-tu déjà pleuré devant un film ?",
+      "Quel est ton dernier rêve étrange ?",
+      "Quel est ton mot préféré ?",
+      "Tu préfères voyager dans le temps ou voler ?",
+      "Plutôt sucré ou salé ?",
+      "As-tu déjà eu un crush sur un(e) inconnu(e) ?",
+      "Quelle est ta couleur préférée ?",
+      "Quel est le pire cadeau qu’on t’ait offert ?",
+      "Quel est ton plus beau souvenir d’enfance ?",
+      "Si tu étais un emoji, ce serait lequel ?",
+      "As-tu déjà eu une phobie bizarre ?",
+      "Quel est ton jeu vidéo préféré ?",
+      "Chien ou chat ?",
+      "Quel est ton pays de rêve ?",
+      "As-tu déjà été amoureux(se) ?",
+      "Tu préfères être invisible ou lire dans les pensées ?",
+      "Quelle est la dernière chose que tu as mangée ?",
+      "Ton pire moment de solitude ?",
+      "Tu préfères être drôle ou intelligent ?",
+      "As-tu déjà dit un secret que tu n’aurais pas dû ?",
+      "Si tu pouvais vivre dans un film, lequel ?",
+      "Quelle est ta plus grande réussite ?",
+      "Es-tu déjà tombé amoureux(se) en un regard ?",
+      "Quel est ton passe-temps favori ?",
+      "As-tu déjà pleuré de rire ?",
+      "Quelle appli devrais-tu supprimer mais tu ne peux pas ?",
+      "Ton dernier fou rire ?",
+      "Ta boisson du matin préférée ?",
+      "As-tu une routine secrète ?",
+      "Quel est ton réseau social préféré ?",
+      "Si tu étais un fruit ?",
+      "Ton film préféré de tous les temps ?",
+      "Quel est ton mot interdit préféré ?",
+      "Ton plus gros fou rire en classe ?",
+      "Quelle est ta plus grande addiction ?",
+      "Quelle odeur détestes-tu ?",
+      "Quelle odeur adores-tu ?",
+      "As-tu déjà fait une fugue ?",
+      "As-tu déjà parlé en dormant ?",
+      "As-tu un objet fétiche ?",
+      "Es-tu déjà tombé(e) en public ?",
+      "As-tu déjà changé de style radicalement ?",
+      "Quel est le secret que personne ne connaît ?",
+      "Es-tu jaloux(se) ?",
+      "Quelle chanson t’émeut à chaque fois ?",
+      "Quelle est la dernière chose que tu as cherchée sur Google ?",
+      "As-tu déjà fait un rêve lucide ?",
+      "As-tu peur du noir ?",
+      "Quelle est la chose la plus folle que tu aies faite ?",
+      "Tu préfères vivre en ville ou à la campagne ?",
+      "Quelle est ta plus grosse dépense inutile ?",
+      "Quel est le mot que tu dis trop souvent ?",
+      "As-tu déjà parlé à un inconnu pendant une heure ?",
+      "Quelle est la chose la plus embarrassante que tu aies faite ?",
+      "Quel est le métier de tes rêves ?",
+      "Quelle invention aimerais-tu créer ?",
+      "Quel est ton plat que tu cuisines le mieux ?",
+      "Quel est le dernier truc qui t’a rendu heureux(se) ?",
+      "Tu préfères vivre sans musique ou sans internet ?",
+      "As-tu déjà fait un prank réussi ?",
+      "As-tu une chanson coupable que tu adores ?",
+      "As-tu déjà volé quelque chose ?",
+      "Quelle est ta phrase de drague nulle préférée ?",
+      "Es-tu superstitieux(se) ?",
+      "As-tu déjà fait une déclaration d’amour ?",
+      "Quel est ton plus grand regret ?",
+      "Quel est ton livre préféré ?",
+      "Quel est ton pire cauchemar ?",
+      "Quel est ton mot préféré en anglais ?",
+      "Si tu pouvais dîner avec une star, ce serait qui ?",
+      "Quelle est ta tradition familiale préférée ?",
+      "Quel est ton genre musical préféré ?",
+      "Es-tu plus Netflix ou YouTube ?",
+      "As-tu déjà été puni(e) pour quelque chose que tu n’as pas fait ?",
+      "Quel est ton emoji le plus utilisé ?",
+      "Quel est ton rêve le plus fou ?"
     ];
 
     let fingers = [];
@@ -88,13 +168,18 @@
       }
     }
 
+    // Support souris (desktop)
+    let mouseActive = false;
     document.addEventListener('mousedown', e => {
+      mouseActive = true;
       createFinger(e.clientX, e.clientY, 'mouse');
     });
     document.addEventListener('mouseup', e => {
+      mouseActive = false;
       removeFinger('mouse');
     });
 
+    // Support tactile (mobile/tablette)
     document.addEventListener('touchstart', e => {
       for (const touch of e.changedTouches) {
         createFinger(touch.clientX, touch.clientY, touch.identifier);
